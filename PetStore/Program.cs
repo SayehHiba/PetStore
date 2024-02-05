@@ -1,11 +1,25 @@
 using DataAccess;
 using DataAccess.Repositories;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using NLog;
+using NLog.Web;
 using PetStore.DataAccess.UnitOfWork;
 using PetStore.Domain.Interfaces.UnitOfWork;
 
+
+
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+logger.Debug("Application Starting Up");
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+// NLog: Setup NLog for Dependency injection
+builder.Logging.ClearProviders();
+builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+builder.Host.UseNLog();
 
 // Add services to the container.
 

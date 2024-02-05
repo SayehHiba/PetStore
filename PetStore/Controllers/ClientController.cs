@@ -12,19 +12,28 @@ namespace PetStore.Controllers
     public class ClientController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private static ILogger<ClientController> _logger;
 
-        public ClientController(IUnitOfWork unitOfWork)
+        public ClientController(IUnitOfWork unitOfWork, ILogger<ClientController> logger)
         {
             _unitOfWork = unitOfWork;
+            _logger = logger;
 
         }
 
         [HttpPost("add")]
         public void Add(Client entity)
         {
-            _unitOfWork.Client.Add(entity);
-            _unitOfWork.Complete();
+            try
+            {
+                _unitOfWork.Client.Add(entity);
+                _unitOfWork.Complete();
+                _logger.LogInformation("add client with id : {client}", entity.Client_id) ;
+            }catch (Exception ex)
+            {
+                _logger.LogInformation("error : {e}", ex.Message);
 
+            }
         }
 
         [HttpPut]
