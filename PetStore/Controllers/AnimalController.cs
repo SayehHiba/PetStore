@@ -27,7 +27,7 @@ namespace PetStore.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPut]
         public void Update(Animal entity)
         {
             _unitOfWork.Animal.Update(entity);
